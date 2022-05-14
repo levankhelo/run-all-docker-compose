@@ -1,0 +1,29 @@
+#!/bin/bash
+
+POSITIONAL_ARGS=()
+
+while [[ 0 -gt 0 ]]; do
+  case  in
+    -u|--up|up)
+      find . -maxdepth 1 -type d \( ! -name . \) -exec bash -c "cd '{}' && if [[ -f docker-compose.yaml ]]; then docker compose up -d; fi &" \;
+    shift
+    ;;
+    -d|--down|down)
+      find . -maxdepth 1 -type d \( ! -name . \) -exec bash -c "cd '{}' && if [[ -f docker-compose.yaml ]]; then docker compose down; fi &" \;
+    shift
+    ;;
+    -b|--build|build)
+      find . -maxdepth 1 -type d \( ! -name . \) -exec bash -c "cd '{}' && if [[ -f docker-compose.yaml ]]; then docker compose build; fi &" \;
+    shift
+    ;;
+    -r|--run|run)
+      find . -maxdepth 1 -type d \( ! -name . \) -exec bash -c "cd '{}' && if [[ -f run.sh ]]; then bash run.sh; fi" \;
+    shift
+    ;;
+    -*|--*)
+      echo "Unknown option "
+      exit 1
+    shift
+    ;;
+  esac
+done
